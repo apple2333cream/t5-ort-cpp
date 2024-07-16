@@ -1,7 +1,7 @@
 #include "onnxruntime_run_options_config_keys.h"
 #include "onnxruntime_cxx_api.h"
-// #include "t5_logger.h"
-#include <spdlog/spdlog.h>
+#include "t5_logger.h"
+// #include <spdlog/spdlog.h>
 #include <vector>
 #include <fstream>
 #include <iostream>
@@ -41,10 +41,11 @@ class T5EncoderDecoder
         T5EncoderDecoder(){};
         ~T5EncoderDecoder(){};   
         void Init(const std::string &model_enc,const std::string &model_dec,const std::string & spiece_model, int thread_num);
+        void InitV2(const std::string &model, const std::string &spiece_model, int thread_num);
         std::vector<std::vector<float>> Infer(const std::string &text);
-                  
-        std::vector<int64_t> PreProcessing(const std::string& text);
-        std::string PostProcessing(const std::vector<int>result,const std::vector<int>result_socre);
+        std::string InferV2(const std::string &text);                  
+        std::vector<int32_t> PreProcessing(const std::string& text);
+        std::string PostProcessing(const std::vector<int>result);
 
         std::shared_ptr<Ort::Session> enc_session_ = nullptr;
         std::shared_ptr<Ort::Session> dec_session_ = nullptr;
@@ -54,15 +55,15 @@ class T5EncoderDecoder
         std::vector<const char *> enc_out_names_;
         std::vector<const char *> dec_in_names_;
         std::vector<const char *> dec_out_names_;
-        int sequence_size_;
         void GetInputOutputInfo( const std::shared_ptr<Ort::Session> &session,
-        std::vector<const char *> *in_names, std::vector<const char *> *out_names); 
+                std::vector<const char *> *in_names, std::vector<const char *> *out_names); 
   
     private:
         std::shared_ptr<SentencePieceTokenizer> tokenizer_ = std::make_shared<SentencePieceTokenizer>();
         void ReadModelEnc(const char *model);           
         void ReadModelDec(const char *model); 
-        float temperature=0.f;  
+        float temperature_=0.f;  
+        int maxseq_length_=100;
         std::vector<Ort::Value> decoder_onnx;  
   
     };

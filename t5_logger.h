@@ -19,14 +19,7 @@ public:
 
 private:
     static std::shared_ptr<spdlog::logger> logger_;
-};
-
-//  #define LOG_INFO(format,...) SPDLOG_LOGGER_INFO(Logger::getLogger(), format, __VA_ARGS__)
-//  #define LOG_DEBUG(format,...) SPDLOG_LOGGER_DEBUG(Logger::getLogger(), format, __VA_ARGS__)
-//  #define LOG_WARN(format,...) SPDLOG_LOGGER_WARN(Logger::getLogger(), format, __VA_ARGS__)
-//  #define LOG_ERROR(format,...) SPDLOG_LOGGER_ERROR(Logger::getLogger(), format, __VA_ARGS__)
-
- 
+}; 
 #define LOG_DEBUG(...) SPDLOG_LOGGER_CALL((Logger::getLogger() == nullptr ? spdlog::default_logger() : Logger::getLogger()), spdlog::level::debug, __VA_ARGS__)
 #define LOG_INFO(...) SPDLOG_LOGGER_CALL((Logger::getLogger() == nullptr ? spdlog::default_logger() : Logger::getLogger()), spdlog::level::info, __VA_ARGS__)
 #define LOG_WARN(...) SPDLOG_LOGGER_CALL((Logger::getLogger() == nullptr ? spdlog::default_logger() : Logger::getLogger()), spdlog::level::warn, __VA_ARGS__)
