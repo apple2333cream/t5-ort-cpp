@@ -1,0 +1,36 @@
+#ifndef LOGGER_H
+#define LOGGER_H
+
+#include "iostream"
+// #define  SPDLOG_NO_SOURCE_LOC 1
+#define SPDLOG_ACTIVE_LEVEL 0
+#include <spdlog/spdlog.h>
+#include "spdlog/sinks/basic_file_sink.h"
+#include "spdlog/sinks/rotating_file_sink.h"
+#include "spdlog/sinks/stdout_color_sinks.h"
+#include "spdlog/details/fmt_helper.h"
+
+
+class Logger {
+public:
+    static int Init(const std::string& log_path, const int log_level=1, const bool display=true, const int max_file_size=10, const int max_rotate_file=10);
+    static std::shared_ptr<spdlog::logger> getLogger();
+    
+
+private:
+    static std::shared_ptr<spdlog::logger> logger_;
+};
+
+//  #define LOG_INFO(format,...) SPDLOG_LOGGER_INFO(Logger::getLogger(), format, __VA_ARGS__)
+//  #define LOG_DEBUG(format,...) SPDLOG_LOGGER_DEBUG(Logger::getLogger(), format, __VA_ARGS__)
+//  #define LOG_WARN(format,...) SPDLOG_LOGGER_WARN(Logger::getLogger(), format, __VA_ARGS__)
+//  #define LOG_ERROR(format,...) SPDLOG_LOGGER_ERROR(Logger::getLogger(), format, __VA_ARGS__)
+
+ 
+#define LOG_DEBUG(...) SPDLOG_LOGGER_CALL((Logger::getLogger() == nullptr ? spdlog::default_logger() : Logger::getLogger()), spdlog::level::debug, __VA_ARGS__)
+#define LOG_INFO(...) SPDLOG_LOGGER_CALL((Logger::getLogger() == nullptr ? spdlog::default_logger() : Logger::getLogger()), spdlog::level::info, __VA_ARGS__)
+#define LOG_WARN(...) SPDLOG_LOGGER_CALL((Logger::getLogger() == nullptr ? spdlog::default_logger() : Logger::getLogger()), spdlog::level::warn, __VA_ARGS__)
+#define LOG_ERROR(...) SPDLOG_LOGGER_CALL((Logger::getLogger() == nullptr ? spdlog::default_logger() : Logger::getLogger()), spdlog::level::err, __VA_ARGS__)
+
+
+#endif // LOGGER_H

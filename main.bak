@@ -1,0 +1,28 @@
+#include <sentencepiece_processor.h>
+#include "sentencepiece_tokenizer.h"
+#include "iostream"
+#include <memory>
+
+int main()
+{    
+    std::string spiece_model = "/workspace/t5-onnxruntime/spiece.model";
+    std::shared_ptr<SentencePieceTokenizer> sentence_hanle = std::make_shared<SentencePieceTokenizer>();
+    sentence_hanle->InitTokenizer(spiece_model); 
+    std::vector<int32_t> ids;
+    std::vector<std::string> pieces;
+    std::string text = "translate English to French: I was a victim of a series of accidents.";
+    ids = sentence_hanle->Encode(text);
+    pieces = sentence_hanle->EncodStr(text);
+    for (const int id : ids)
+    {
+        std::cout << id << "|";
+    }
+    std::cout << std::endl;
+    for (const std::string &token : pieces)
+    {
+        std::cout << token << "|";
+    }
+    std::cout << std::endl;
+
+    return 0;
+}
