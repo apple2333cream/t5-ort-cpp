@@ -38,7 +38,7 @@ include_directories(${PROJECT_SOURCE_DIR}/third_party/json_include)
 include_directories(${PROJECT_SOURCE_DIR}/third_party/http)
 add_executable(t5_engine ${FRONT_SOURCES})
 
-target_link_libraries(t5_engine PRIVATE onnxruntime libsentencepiece.a Threads::Threads) # 添加cuda和tensorrt库
+target_link_libraries(t5_engine PRIVATE onnxruntime sentencepiece Threads::Threads) # 添加cuda和tensorrt库
 message("cmake done!")
 
 
